@@ -1,0 +1,54 @@
+services:
+  # ==========================================
+  # Render Web Service (Express Backend API)
+  # ==========================================
+  - type: web
+    name: nexmart-api
+    env: node
+    plan: starter
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_URL
+        fromStaticSite:
+          name: nexmart-frontend
+          property: url
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: PAYMENT_PROVIDER_KEY
+        value: test_key_sandbox_gateway
+      - key: PAYMENT_PROVIDER_SECRET
+        generateValue: true
+
+  # ==========================================
+  # Render Static Site (React + Vite Frontend)
+  # ==========================================
+  - type: web
+    name: nexmart-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      # React Router SPA Rewrite Rule
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: nexmart-api
+          property: url

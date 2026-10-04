@@ -1,0 +1,6 @@
+{
+  "name": "NexMart Enterprise E-Commerce Platform",
+  "description": "A full-stack, enterprise-grade e-commerce application featuring product catalog, variant selection, real-time cart calculations, multi-step checkout, order tracking, and administrative control.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
